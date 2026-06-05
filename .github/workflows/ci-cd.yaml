@@ -1,0 +1,66 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+
+    runs-on: self-hosted
+
+    env:
+      IMAGE_TAG: ${{ github.sha }}
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Docker Login
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USER }}
+        password: ${{ secrets.DOCKER_PASS }}
+
+    - name: Build Student Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USER }}/student:${IMAGE_TAG} ./student-service
+        docker push ${{ secrets.DOCKER_USER }}/student:${IMAGE_TAG}
+
+    - name: Build Course Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USER }}/course:${IMAGE_TAG} ./course-service
+        docker push ${{ secrets.DOCKER_USER }}/course:${IMAGE_TAG}
+
+    - name: Build Result Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USER }}/result:${IMAGE_TAG} ./result-service
+        docker push ${{ secrets.DOCKER_USER }}/result:${IMAGE_TAG}
+
+    - name: Update Kubernetes Manifests
+      run: |
+        sed -i "s|STUDENT_IMAGE|${{ secrets.DOCKER_USER }}/student:${IMAGE_TAG}|g" k8s/student.yaml
+        sed -i "s|COURSE_IMAGE|${{ secrets.DOCKER_USER }}/course:${IMAGE_TAG}|g" k8s/course.yaml
+        sed -i "s|RESULT_IMAGE|${{ secrets.DOCKER_USER }}/result:${IMAGE_TAG}|g" k8s/result.yaml
+
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f k8s/postgres.yaml
+        kubectl apply -f k8s/student.yaml
+        kubectl apply -f k8s/course.yaml
+        kubectl apply -f k8s/result.yaml
+        kubectl apply -f k8s/ingress.yaml
+
+    - name: Wait for Rollout
+      run: |
+        kubectl rollout status deployment/student
+        kubectl rollout status deployment/course
+        kubectl rollout status deployment/result
+
+    - name: Verify Deployment
+      run: |
+        kubectl get pods
+        kubectl get svc
+        kubectl get ingress

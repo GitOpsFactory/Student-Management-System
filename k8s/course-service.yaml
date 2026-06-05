@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: course
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: course
+
+  template:
+    metadata:
+      labels:
+        app: course
+
+    spec:
+      containers:
+      - name: course
+        image: bkuslapur/course:v1
+
+        ports:
+        - containerPort: 5001
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: course-service
+
+spec:
+  selector:
+    app: course
+
+  ports:
+  - port: 80
+    targetPort: 5001
