@@ -47,10 +47,10 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
+        kubectl apply -f k8s/student-service.yaml
         kubectl apply -f k8s/postgres.yaml
-        kubectl apply -f k8s/student.yaml
-        kubectl apply -f k8s/course.yaml
-        kubectl apply -f k8s/result.yaml
+        kubectl apply -f k8s/course-service.yaml
+        kubectl apply -f k8s/result-service.yaml
         kubectl apply -f k8s/ingress.yaml
 
     - name: Wait for Rollout
