@@ -41,9 +41,9 @@ jobs:
 
     - name: Update Kubernetes Manifests
       run: |
-        sed -i "s|STUDENT_IMAGE|${{ secrets.DOCKER_USERNAME }}/student:${IMAGE_TAG}|g" k8s/student.yaml
-        sed -i "s|COURSE_IMAGE|${{ secrets.DOCKER_USERNAME }}/course:${IMAGE_TAG}|g" k8s/course.yaml
-        sed -i "s|RESULT_IMAGE|${{ secrets.DOCKER_USERNAME }}/result:${IMAGE_TAG}|g" k8s/result.yaml
+        sed -i "s|STUDENT_IMAGE|${{ secrets.DOCKER_USERNAME }}/student:${IMAGE_TAG}|g" k8s/student-service.yaml
+        sed -i "s|COURSE_IMAGE|${{ secrets.DOCKER_USERNAME }}/course:${IMAGE_TAG}|g" k8s/course-service.yaml
+        sed -i "s|RESULT_IMAGE|${{ secrets.DOCKER_USERNAME }}/result:${IMAGE_TAG}|g" k8s/result-service.yaml
 
     - name: Deploy to Kubernetes
       run: |
