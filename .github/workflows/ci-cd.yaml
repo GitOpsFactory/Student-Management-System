@@ -26,18 +26,18 @@ jobs:
 
     - name: Build Student Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/student:v1 ./student-service
-        docker push ${{ secrets.DOCKER_USERNAME }}/student:v1
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/student:v2 ./student-service
+        docker push ${{ secrets.DOCKER_USERNAME }}/student:v2
 
     - name: Build Course Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/course:v1 ./course-service
-        docker push ${{ secrets.DOCKER_USERNAME }}/course:v1
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/course:v2 ./course-service
+        docker push ${{ secrets.DOCKER_USERNAME }}/course:v2
 
     - name: Build Result Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/result:v1 ./result-service
-        docker push ${{ secrets.DOCKER_USERNAME }}/result:v1
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/result:v2 ./result-service
+        docker push ${{ secrets.DOCKER_USERNAME }}/result:v2
 
    
     - name: Deploy to Kubernetes

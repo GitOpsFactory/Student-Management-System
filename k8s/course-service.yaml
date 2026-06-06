@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: course
-        image: bkuslapur/course:v1
+        image: bkuslapur/course:v2
 
         ports:
         - containerPort: 5002

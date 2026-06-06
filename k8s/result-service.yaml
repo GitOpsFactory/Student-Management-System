@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: result
-        image: bkuslapur/result:v1
+        image: bkuslapur/result:v2
 
         ports:
         - containerPort: 5003
