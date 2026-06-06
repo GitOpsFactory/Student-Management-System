@@ -26,25 +26,20 @@ jobs:
 
     - name: Build Student Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/student:${IMAGE_TAG} ./student-service
-        docker push ${{ secrets.DOCKER_USERNAME }}/student:${IMAGE_TAG}
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/student:v1 ./student-service
+        docker push ${{ secrets.DOCKER_USERNAME }}/student:v1
 
     - name: Build Course Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/course:${IMAGE_TAG} ./course-service
-        docker push ${{ secrets.DOCKER_USERNAME }}/course:${IMAGE_TAG}
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/course:v1 ./course-service
+        docker push ${{ secrets.DOCKER_USERNAME }}/course:v1
 
     - name: Build Result Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/result:${IMAGE_TAG} ./result-service
-        docker push ${{ secrets.DOCKER_USERNAME }}/result:${IMAGE_TAG}
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/result:v1 ./result-service
+        docker push ${{ secrets.DOCKER_USERNAME }}/result:v1
 
-    - name: Update Kubernetes Manifests
-      run: |
-        sed -i "s|STUDENT_IMAGE|${{ secrets.DOCKER_USERNAME }}/student:${IMAGE_TAG}|g" k8s/student-service.yaml
-        sed -i "s|COURSE_IMAGE|${{ secrets.DOCKER_USERNAME }}/course:${IMAGE_TAG}|g" k8s/course-service.yaml
-        sed -i "s|RESULT_IMAGE|${{ secrets.DOCKER_USERNAME }}/result:${IMAGE_TAG}|g" k8s/result-service.yaml
-
+   
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f k8s/student-service.yaml

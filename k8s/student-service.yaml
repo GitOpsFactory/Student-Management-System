@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: student
-        image: yourdockerhub/student:v1
+        image: bkuslapur/student:v1
 
         ports:
         - containerPort: 5001
