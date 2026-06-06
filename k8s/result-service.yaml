@@ -22,7 +22,7 @@ spec:
         image: bkuslapur/result:v1
 
         ports:
-        - containerPort: 5001
+        - containerPort: 5003
 
 ---
 apiVersion: v1
@@ -37,4 +37,4 @@ spec:
 
   ports:
   - port: 80
-    targetPort: 5001
+    targetPort: 5003
